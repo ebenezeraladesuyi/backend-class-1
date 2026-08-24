@@ -1,10 +1,11 @@
 import userModel from "../model/authMode.js";
 import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
+// import { authMiddleware } from "../middleware/middleware.js";
 // signup
 export const register = async (req, res) => {
     try {
-        const { email, password } = req.body;
+        const { name, username, email, password } = req.body;
         // check if user already exist
         const existingUser = await userModel.findOne({ email });
         if (existingUser) {
@@ -13,10 +14,19 @@ export const register = async (req, res) => {
             });
         }
         ;
+        // check existing username
+        const existingUsername = await userModel.findOne({ username });
+        if (existingUsername) {
+            res.status(400).json({
+                message: "Username already exist"
+            });
+        }
         // hash password
         const hashedPassword = await bcrypt.hash(password, 10);
         // create user
         const user = await userModel.create({
+            name,
+            username,
             email,
             password: hashedPassword,
         });
@@ -24,6 +34,8 @@ export const register = async (req, res) => {
             mesage: "User created successfully",
             user: {
                 id: user._id,
+                name,
+                username,
                 email: user.email,
             }
         });
@@ -63,6 +75,9 @@ export const login = async (req, res) => {
         });
         res.json({
             message: "Login successful",
+            _id: user._id,
+            name: user.name,
+            username: user.username,
             email,
             token,
         });
@@ -71,6 +86,30 @@ export const login = async (req, res) => {
         console.error(error);
         res.status(500).json({
             message: "Failed to login or Something went wrong"
+        });
+    }
+};
+// get all registerd users
+export const getUser = async (req, res) => {
+    try {
+        const user = await userModel.findOne();
+        res.status(200).json({
+            success: true,
+            message: "user profile loaded",
+            user
+            // user: {
+            //     id: user._id,
+            //     name: user.name,
+            //     username: user.username,
+            //     email: user.email,
+            // }
+        });
+    }
+    catch (error) {
+        console.error(error);
+        return res.status(400).json({
+            message: "error loading profile",
+            error
         });
     }
 };

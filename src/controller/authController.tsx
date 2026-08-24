@@ -7,7 +7,7 @@ import jwt from "jsonwebtoken"
 // signup
 export const register = async (req: Request, res: Response) => {
     try {
-        const  { email, password } = req.body;
+        const  { name, username, email, password } = req.body;
 
         // check if user already exist
         const existingUser = await userModel.findOne({ email });
@@ -18,11 +18,22 @@ export const register = async (req: Request, res: Response) => {
             })
         };
 
+        // check existing username
+        const existingUsername = await userModel.findOne({ username })
+
+        if (existingUsername) {
+            res.status(400).json({
+                message: "Username already exist"
+            })
+        }
+
         // hash password
         const hashedPassword = await bcrypt.hash(password, 10)
 
         // create user
         const user = await userModel.create({
+            name,
+            username,
             email, 
             password: hashedPassword,
         })
@@ -31,6 +42,8 @@ export const register = async (req: Request, res: Response) => {
             mesage: "User created successfully",
             user: {
                 id: user._id,
+                name,
+                username, 
                 email: user.email,
             }
         })
@@ -85,6 +98,9 @@ export const login = async (req: Request, res: Response) =>  {
 
         res.json({
             message: "Login successful",
+            _id: user._id,
+            name: user.name,
+            username: user.username,
             email,
             token,
         })
@@ -97,3 +113,24 @@ export const login = async (req: Request, res: Response) =>  {
         })
     }
 };
+
+// get all registered users
+export const getUser = async (req: Request, res: Response) => {
+    try {
+
+        const user = await userModel.findOne()
+
+        res.status(200).json({
+            success: true,
+            message: "user profile loaded",
+            user
+        })
+    } catch (error) {
+        console.error(error)
+
+        return res.status(400).json({
+            message: "error loading profile",
+            error
+        })
+    }
+}
