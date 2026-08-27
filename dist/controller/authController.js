@@ -1,7 +1,6 @@
 import userModel from "../model/authMode.js";
 import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
-// import { authMiddleware } from "../middleware/middleware.js";
 // signup
 export const register = async (req, res) => {
     try {
@@ -89,7 +88,7 @@ export const login = async (req, res) => {
         });
     }
 };
-// get all registerd users
+// get all registered users
 export const getUser = async (req, res) => {
     try {
         const user = await userModel.findOne();
@@ -97,12 +96,6 @@ export const getUser = async (req, res) => {
             success: true,
             message: "user profile loaded",
             user
-            // user: {
-            //     id: user._id,
-            //     name: user.name,
-            //     username: user.username,
-            //     email: user.email,
-            // }
         });
     }
     catch (error) {

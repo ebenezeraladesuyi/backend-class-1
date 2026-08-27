@@ -21,6 +21,6 @@ const userSchema = new Schema({
 }, {
     timestamps: true,
 });
-const userModel = mongoose.model("User", userSchema);
+const userModel = mongoose.model("auth", userSchema);
 export default userModel;
 //# sourceMappingURL=authMode.js.map
