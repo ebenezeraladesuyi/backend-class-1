@@ -8,6 +8,7 @@ const transporter = nodemailer.createTransport({
 });
 export const sendOtpToEmail = async (email, otp) => {
     await transporter.sendMail({
+        // from: `"Backend Class <${process.env.GMAIL_USER}>`,
         from: `"Backend Class <${process.env.GMAIL_USER}>`,
         to: email,
         subject: "Your Verification OTP",

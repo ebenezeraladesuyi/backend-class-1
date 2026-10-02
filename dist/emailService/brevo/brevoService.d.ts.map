@@ -1,0 +1,1 @@
+{"version":3,"file":"brevoService.d.ts","sourceRoot":"","sources":["../../../src/emailService/brevo/brevoService.ts"],"names":[],"mappings":"AAMA,UAAU,eAAe;IACvB,EAAE,EAAE,MAAM,CAAC;IACX,OAAO,EAAE,MAAM,CAAC;IAChB,WAAW,EAAE,MAAM,CAAC;CACrB;AAED,eAAO,MAAM,SAAS,kCAInB,eAAe,KAAG,OAAO,CAAC,IAAI,CA2BhC,CAAC"}

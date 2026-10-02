@@ -2,6 +2,7 @@ import type { Request, Response } from "express";
 import newUser from "../model/newUserModel.js";
 import bcrypt from "bcryptjs";
 import { sendOtpToEmail } from "../emailService/mailer.js";
+import { sendOtpEmail } from "../emailService/brevo/brevoOtpEmail.js";
 
 // Generate OTP
 const generateNewOtp = (): string => {
@@ -33,7 +34,9 @@ export const signup = async (req: Request, res: Response) => {
             otpExpires: new Date(Date.now() + 10 * 60 * 1000)
         })
 
-        await sendOtpToEmail(email, otp);
+        // await sendOtpToEmail(email, otp);
+
+        await sendOtpEmail(email, otp)
 
         return res.status(201).json({
             message: "signup successful. Check your email for your OTP",

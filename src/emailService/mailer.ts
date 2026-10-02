@@ -15,6 +15,7 @@ export const sendOtpToEmail = async (
     otp: string
 ) => {
     await transporter.sendMail({
+        // from: `"Backend Class <${process.env.GMAIL_USER}>`,
         from: `"Backend Class <${process.env.GMAIL_USER}>`,
         to: email,
         subject: "Your Verification OTP",
